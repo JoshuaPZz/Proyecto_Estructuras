@@ -275,7 +275,7 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
             }
 
             // Ahora buscar el vértice más cercano usando el árbol
-            Vertices punto_buscado(px, py, pz); // Crear un objeto Vertices en lugar de un vector de floats
+            Vertices punto_buscado(-1,px, py, pz); // Crear un objeto Vertices en lugar de un vector de floats
             vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia); // Método que busca el vértice más cercano
 
             if (menor_distancia < 1e9) { // Verificar si se encontró un vértice

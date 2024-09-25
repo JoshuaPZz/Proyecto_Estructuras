@@ -37,15 +37,11 @@ int kdtree<T>::tamano()
 
 template<class T>
 void kdtree<T>::insertar(Vertices& vertice) {
-	// Crear un vector con las coordenadas del vértice
-	vector<float> val = { vertice.ObtenerCoorX(), vertice.ObtenerCoorY(), vertice.ObtenerCoorZ() };
-
-	// Comprobar si el árbol está vacío
 	if (!raiz) {
 		raiz = new kdnodo<T>();
-		raiz->fijarDato(val);
+		raiz->fijarDato(vertice);  // Usamos el objeto Vertices directamente
 	} else {
-		raiz->insertar(val, 0);
+		raiz->insertar(vertice, 0); // Llamamos al método insertar
 	}
 }
 
@@ -107,20 +103,26 @@ void kdtree<T>::minimo(int &mini)
 }
 
 template<class T>
-double distanciaEuclidiana(kdnodo<T>* puntoFig, const std::vector<float>& puntoComp) {
-
+double kdtree<T>::distanciaEuclidiana(Vertices& puntoFig, const std::vector<float>& puntoComp) {
 	double suma = 0.0;
-	std::vector<float> coordsFig = puntoFig->obtenerDato(); // Especificamos el tipo explícitamente.
 
-	for (size_t i = 0; i < puntoComp.size(); ++i) {
-		suma += pow(coordsFig[i] - puntoComp[i], 2);
-	}
+	// Utiliza los métodos adecuados para obtener las coordenadas
+	float coordX = puntoFig.ObtenerCoorX();
+	float coordY = puntoFig.ObtenerCoorY();
+	float coordZ = puntoFig.ObtenerCoorZ();
+
+	// Supongamos que puntoComp tiene 3 dimensiones
+	suma += pow(coordX - puntoComp[0], 2);
+	suma += pow(coordY - puntoComp[1], 2);
+	suma += pow(coordZ - puntoComp[2], 2);
 
 	return sqrt(suma);
 }
 
+
+
 template<class T>
-Vertices kdtree<T>::encontrarMasCercano(const Vertices& punto_buscado, double& menor_distancia) {
+Vertices kdtree<T>::encontrarMasCercano(Vertices& punto_buscado, double& menor_distancia) {
 	Vertices vertice_cercano; // Variable para almacenar el vértice más cercano
 	std::vector<float> punto = { punto_buscado.ObtenerCoorX(), punto_buscado.ObtenerCoorY(), punto_buscado.ObtenerCoorZ() };
 	encontrarMasCercanoRec(raiz, punto, menor_distancia, vertice_cercano);
@@ -128,7 +130,7 @@ Vertices kdtree<T>::encontrarMasCercano(const Vertices& punto_buscado, double& m
 }
 
 template<class T>
-kdnodo<T>* kdtree<T>::insertarRec(kdnodo<T>* nodo, const Vertices& vertice, int profundidad) {
+kdnodo<T>* kdtree<T>::insertarRec(kdnodo<T>* nodo,  Vertices& vertice, int profundidad) {
 	std::vector<float> punto = { vertice.ObtenerCoorX(), vertice.ObtenerCoorY(), vertice.ObtenerCoorZ() };
 	if (nodo == nullptr) {
 		nodo = new kdnodo<T>();
@@ -153,24 +155,31 @@ template<class T>
 void kdtree<T>::encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano) {
 	if (nodo == nullptr) return;
 
-	// Calcular la distancia euclidiana
-	double distancia = distanciaEuclidiana(nodo->obtenerDato(), punto);
+	// Asegúrate de que obtenerDato() devuelva un objeto Vertices
+	Vertices datoNodo = nodo->obtenerDato(); // Aquí obtenemos el objeto Vertices
+
+	// Llama a distanciaEuclidiana con un objeto Vertices
+	double distancia = distanciaEuclidiana(datoNodo, punto);
+
 	if (distancia < menor_distancia) {
 		menor_distancia = distancia;
-		vertice_cercano = Vertices(nodo->obtenerDato()[0], nodo->obtenerDato()[1], nodo->obtenerDato()[2]); // Suponiendo que Vertices tiene un constructor que toma x, y, z
+		vertice_cercano = datoNodo; // Usar el objeto Vertices directamente
 	}
 
 	int dim = punto.size();
 	int indice = 0; // Alterna entre los índices de las dimensiones
-	if (punto[indice] < nodo->obtenerDato()[indice]) {
+	float coordNodo = datoNodo.ObtenerCoorX(); // Usa el método adecuado para obtener la coordenada
+
+	if (punto[indice] < coordNodo) {
 		encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano);
-		if (fabs(punto[indice] - nodo->obtenerDato()[indice]) < menor_distancia) {
+		if (fabs(punto[indice] - coordNodo) < menor_distancia) {
 			encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano);
 		}
 	} else {
 		encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano);
-		if (fabs(punto[indice] - nodo->obtenerDato()[indice]) < menor_distancia) {
+		if (fabs(punto[indice] - coordNodo) < menor_distancia) {
 			encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano);
 		}
 	}
 }
+

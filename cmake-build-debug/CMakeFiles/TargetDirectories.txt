@@ -1,3 +1,3 @@
-C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/PROYECTO/cmake-build-debug/CMakeFiles/Proyecto1_Grupo1.dir
-C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/PROYECTO/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/PROYECTO/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/Proyecto_Estructuras/cmake-build-debug/CMakeFiles/Proyecto1_Grupo1.dir
+C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/Proyecto_Estructuras/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/joshu/OneDrive/Escritorio/codi/Estrcutura De Datos/Proyecto_Estructuras/cmake-build-debug/CMakeFiles/rebuild_cache.dir
