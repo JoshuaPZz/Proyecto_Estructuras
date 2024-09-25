@@ -27,6 +27,9 @@ public:
   void FijarCoorX(float coordenadaX);
   void FijarCoorY(float coordenadaY);
   void FijarCoorZ(float coordenadaZ);
+  bool esVacio() const { // Nueva función para verificar si el vértice está vacío
+    return indiceVert == -1; // O cualquier otra condición que definas
+  }
 
 };
 

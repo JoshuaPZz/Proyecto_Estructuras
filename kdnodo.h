@@ -42,4 +42,5 @@ public:
                     pow(p1.ObtenerCoorZ() - p2.ObtenerCoorZ(), 2));
     }
 };
+#include "kdnodo.hxx"
 #endif

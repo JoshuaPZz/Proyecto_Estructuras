@@ -1,5 +1,4 @@
 #include "kdtree.h"
-#include "kdnodo.h"
 #include <cmath>
 
 using namespace std;

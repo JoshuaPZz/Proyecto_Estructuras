@@ -14,7 +14,7 @@ kdnodo<T>::kdnodo()
 template<class T>
 T& kdnodo<T>::obtenerDato()
 {
-    return datos;
+    return dato;
 }
 
 template<class T>
@@ -80,10 +80,10 @@ int kdnodo<T>::tamano()
 template<class T>
 void kdnodo<T>::insertar(T& val, int nivel)
 {
-    if (datos.empty())
-    {
-        fijarDato(val);  // Guardamos el primer nodo
+    if (dato.esVacio()) {
+        fijarDato(val); // Guardamos el primer nodo
     }
+
     else
     {
         // Obtén la dimensión actual en la que estamos insertando
@@ -122,7 +122,7 @@ void kdnodo<T>::insertar(T& val, int nivel)
 template<class T>
 std::vector<float> kdnodo<T>::obtenerCoordenadas()
 {
-    return {datos[0].getX(), datos[0].getY(), datos[0].getZ()};
+    return {dato[0].getX(), dato[0].getY(), dato[0].getZ()};
 }
 
 template<class T>
@@ -228,10 +228,10 @@ template<class T>
 void kdnodo<T>::imprimir()
 {
     cout << "( ";
-    for (size_t i = 0; i < this->datos.size(); ++i)
+    for (size_t i = 0; i < this->dato.size(); ++i)
     {
-        cout << this->datos[i];
-        if (i != this->datos.size() - 1)
+        cout << this->dato[i];
+        if (i != this->dato.size() - 1)
             cout << ", ";
     }
     cout << " )\n";
