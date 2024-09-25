@@ -259,6 +259,8 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
     float py = stof(coory);
     float pz = stof(coorz);
 
+
+
     list<Figuras>::iterator it = figura.begin(); // Iterador para la lista de figuras
     while (it != figura.end()) {
         if (it->ObtenerNombre() == nombre) {
@@ -267,11 +269,14 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
 
             // Obtener los vértices de la figura actual
             list<Vertices> vertices = it->ObtenerVertices();
-
             // Insertar los vértices en el árbol
-            for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
-                // Cambiar a utilizar el objeto Vertices directamente
-                arbol.insertar(*vertice_it);  // Insertar vértice en el árbol
+          for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
+            cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
+                 << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
+            arbol.insertar(*vertice_it);
+
+          //NO SALE DE ESTE BUCLE
+
             }
 
             // Ahora buscar el vértice más cercano usando el árbol
@@ -299,8 +304,14 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
 
 
 void Figuras::insertarVerticeArbol(Vertices& vertice) {
-  // Cambiar a utilizar el objeto Vertices directamente
-  arbol.insertar(vertice);  // Insertar en el árbol k-d
+    // Asegúrate de que el árbol está inicializado
+    if (arbol.esVacio()) {
+        cout << "Error: El árbol no está inicializado." << endl;
+        return;
+    }
+
+    // Insertar en el árbol k-d
+    arbol.insertar(vertice);
 }
 
 
