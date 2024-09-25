@@ -1,0 +1,28 @@
+cargar nombre_archivo
+Carga en memoria la informacion del objeto nombre_objeto contenida en el archivo identificado por nombre_archivo.
+listado
+Lista los objetos cargados actualmente en memoria, junto con la informacion basica de cada uno: cantidad de puntos, de aristas y de caras.
+envolvente nombre_objeto
+Calcula la caja envolvente del objeto identificado por nombre_objeto. Esta caja envolvente se define a partir de dos puntos, pmin y pmax, los cuales determinan los limites de una especie de cuarto donde cabe el objeto completo, es decir, todos los vertices del objeto se encuentran contenidos dentro de la caja (ver figura a continuacion). pmin y pmax se calculan como los puntos extremos, en cada dimension, del conjunto de vertices que define el objeto. La caja envolvente se agrega como un nuevo objeto en memoria, asignandole automaticamente el nombre env_nombre_objeto, para distinguirla de los demas objetos en memoria.
+envolvente
+Calcula la caja envolvente que incluye a todos los objetos cargados actualmente en memoria. Esta caja envolvente se calcula de la misma forma que en el comando anterior, solo que teniendo en cuenta todos los vertices de todos los objetos en memoria, para no dejar ninguno por fuera de la caja. La caja envolvente se agrega como un nuevo objeto en memoria, asignandole automaticamente el nombre env_global, para distinguirla de los demas objetos en memoria.
+descargar nombre_objeto
+Descarga de la memoria toda la informacion basica (vertices, aristas, caras) del objeto identificado por nombre_objeto. 
+guardar nombre_objeto nombre_archivo
+Escribe en un archivo de texto, identificado por nombre_archivo, la informacion basica (vertices y caras) del objeto identificado por nombre_objeto. 
+salir
+Termina la ejecucion de la aplicacion.
+v_cercano px py pz nombre_objeto
+Identifica el vertice del objeto nombre_objeto mas cercano (en terminos de la distancia euclidiana) al punto indicado por las coordenadas px, py y pz. Informa en pantalla el indice del vertice, los valores actuales de sus coordenadas, y la distancia a la cual se encuentra del punto dado.
+v_cercano px py pz
+Identifica, entre todos los objetos cargados en memoria, el vertice mas cercano (en terminos de la distancia euclidiana) al punto indicado por las coordenadas px, py y pz. Informa en pantalla el objeto al que pertenece, el indice del vertice, los valores actuales de sus coordenadas, y la distancia a la cual se encuentra del punto dado.
+v_cercanos_caja nombre_objeto
+Identifica los vertices del objeto nombre_objeto mas cercanos (en terminos de la distancia euclidiana) a los puntos (vertices) que definen la respectiva caja envolvente del objeto. Informa en pantalla, en una tabla, las coordenadas de cada una de las esquinas de la caja envolvente, y para cada una de ellas, el indice del vertice mas cercano, los valores actuales de sus coordenadas, y la distancia a la cual se encuentra de la respectiva esquina.
+ruta_corta i1 i2 nombre_objeto
+Identifica los indices de los vertices que conforman la ruta mas corta entre los vertices dados para el objeto nombre_objeto. La distancia entre los vertices esta medida en terminos de la distancia euclidiana. Informa, ademas, la distancia total de la ruta calculada.
+ruta_corta_centro i1 nombre_objeto
+Identifica los indices de los vertices que conforman la ruta mas corta entre el vertice dado y el centro del objeto nombre_objeto. El vertice centro del objeto se identifica calculando el centroide (coordenadas promedio) de todos los vertices del objeto, este punto es agregado entonces a la representacion del objeto. Luego, se busca el vertice del objeto mas cercano a ese centroide, y se conecta con el centroide por medio de una arista. Finalmente, se utiliza el mismo proceso del comando anterior para buscar la ruta mas corta entre el centroide (ya conectado dentro del objeto) y el vertice dado. La distancia entre los vertices esta medida en terminos de la distancia euclidiana. Informa, ademas, la distancia total de la ruta calculada.
+ayuda
+Estos comandos de shell estan definidos internamente. Escribe `ayuda' para ver esta lista.
+ayuda comando
+Escribe `ayuda comando' para obtener mas informacion sobre la funcion `comando'.

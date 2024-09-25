@@ -1,0 +1,9 @@
+# ninja log v6
+8	261	7489853752335373	build.ninja	8b1ffb4dc0bf7fc9
+1011	1201	7463111333248409	Proyecto1_Grupo1.exe	18c11f54845600eb
+20	1583	7489849523171623	CMakeFiles/Proyecto1_Grupo1.dir/main.cpp.obj	e7414b3ce90cbad4
+10	1011	7463111323239330	CMakeFiles/Proyecto1_Grupo1.dir/Figuras.cpp.obj	59700cf895e12494
+11	1794	7489849523076445	CMakeFiles/Proyecto1_Grupo1.dir/Comandos.cpp.obj	c99fbd27023ce625
+31	716	7489845874013714	CMakeFiles/Proyecto1_Grupo1.dir/Caras.cpp.obj	f5113802e0a7950b
+24	1637	7489849523201652	CMakeFiles/Proyecto1_Grupo1.dir/Sistema.cpp.obj	6fc8fbfbfc91479b
+35	656	7489845874043715	CMakeFiles/Proyecto1_Grupo1.dir/Vertices.cpp.obj	a2e944ab8d20c5ca

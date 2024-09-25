@@ -1,0 +1,9 @@
+Hola, Andrea.
+
+Somos el grupo 1, conformado por Valeria Herrera, Juan Sebastián Cruz y Joshua Prieto Zambrano.
+
+Le enviamos este archivo .txt con el comando que utilizamos desde la terminal para ejecutar el programa.
+
+Muchas gracias.
+
+g++ -std=c++11 -o grupo1 Comandos.cpp Sistema.cpp Figuras.cpp Vertices.cpp Caras.cpp main.cpp
