@@ -89,59 +89,41 @@ void kdnodo<T>::insertar(T& val, int nivel) {
 
     // Determinar la dimensión actual
     int dim = nivel % 3;  // Suponiendo que Vertices tiene 3 dimensiones
-    float coordVal;
+    float coordVal, coordDato;
 
     switch (dim) {
-        case 0: coordVal = val.ObtenerCoorX(); break; // Comparar en X
-        case 1: coordVal = val.ObtenerCoorY(); break; // Comparar en Y
-        case 2: coordVal = val.ObtenerCoorZ(); break; // Comparar en Z
+        case 0:
+            coordVal = val.ObtenerCoorX();
+            coordDato = dato.ObtenerCoorX();
+            break; // Comparar en X
+        case 1:
+            coordVal = val.ObtenerCoorY();
+            coordDato = dato.ObtenerCoorY();
+            break; // Comparar en Y
+        case 2:
+            coordVal = val.ObtenerCoorZ();
+            coordDato = dato.ObtenerCoorZ();
+            break; // Comparar en Z
     }
 
-    cout << "Nivel: " << nivel << " Dimensión: " << dim << " CoordVal: " << coordVal << endl;
+    cout << "Nivel: " << nivel << " Dimensión: " << dim << " CoordVal: " << coordVal << " CoordDato: " << coordDato << endl;
 
     // Decidir si ir al hijo izquierdo o derecho
-    if (dim == 0) { // Comparar X
-        if (coordVal < dato.ObtenerCoorX()) {
-            if (hijoIzq == nullptr) {
-                hijoIzq = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo izquierdo para " << val.ObtenerCoorX() << endl;
-            }
-            hijoIzq->insertar(val, nivel + 1); // Llamada recursiva al hijo izquierdo
-        } else {  // Para el caso >=
-            if (hijoDer == nullptr) {
-                hijoDer = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo derecho para " << val.ObtenerCoorX() << endl;
-            }
-            hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
+    if (coordVal < coordDato) {
+        if (hijoIzq == nullptr) {
+            hijoIzq = new kdnodo<T>(); // Crea nuevo nodo
+            cout << "Creando hijo izquierdo para " << coordVal << endl;
         }
-    } else if (dim == 1) { // Comparar Y
-        if (coordVal < dato.ObtenerCoorY()) {
-            if (hijoIzq == nullptr) {
-                hijoIzq = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo izquierdo para " << val.ObtenerCoorY() << endl;
-            }
-            hijoIzq->insertar(val, nivel + 1); // Llamada recursiva al hijo izquierdo
-        } else { // Para el caso >=
-            if (hijoDer == nullptr) {
-                hijoDer = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo derecho para " << val.ObtenerCoorY() << endl;
-            }
-            hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
+        hijoIzq->insertar(val, nivel + 1); // Llamada recursiva al hijo izquierdo
+    } else if (coordVal > coordDato) { // Para el caso >
+        if (hijoDer == nullptr) {
+            hijoDer = new kdnodo<T>(); // Crea nuevo nodo
+            cout << "Creando hijo derecho para " << coordVal << endl;
         }
-    } else { // Comparar Z
-        if (coordVal < dato.ObtenerCoorZ()) {
-            if (hijoIzq == nullptr) {
-                hijoIzq = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo izquierdo para " << val.ObtenerCoorZ() << endl;
-            }
-            hijoIzq->insertar(val, nivel + 1); // Llamada recursiva al hijo izquierdo
-        } else { // Para el caso >=
-            if (hijoDer == nullptr) {
-                hijoDer = new kdnodo<T>(); // Crea nuevo nodo
-                cout << "Creando hijo derecho para " << val.ObtenerCoorZ() << endl;
-            }
-            hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
-        }
+        hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
+    } else {
+        // Si coordVal == coordDato, significa que el nodo ya existe
+        cout << "El vértice ya existe en esta dimensión: " << coordVal << endl;
     }
 }
 
