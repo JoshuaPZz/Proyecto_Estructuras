@@ -69,25 +69,25 @@ int kdnodo<T>::altura()
 
 template<class T>
 void kdnodo<T>::insertar(T& val, int nivel) {
-    // Si el nodo está vacío, fijamos el dato
+    // Si el nodo esta vacio, fijamos el dato
     if (dato.esVacio()) {
         fijarDato(val); // Guardamos el primer nodo
-        cout << "Insertando primer vértice: " << val.ObtenerCoorX() << ", "
+        cout << "Insertando primer vertice: " << val.ObtenerCoorX() << ", "
              << val.ObtenerCoorY() << ", " << val.ObtenerCoorZ() << endl;
         return;
     }
 
-    // Comprobación para evitar duplicados
+    // Comprobacion para evitar duplicados
     if (dato.ObtenerCoorX() == val.ObtenerCoorX() &&
         dato.ObtenerCoorY() == val.ObtenerCoorY() &&
         dato.ObtenerCoorZ() == val.ObtenerCoorZ()) {
-        cout << "El vértice ya existe en el árbol: "
+        cout << "El vertice ya existe en el arbol: "
              << val.ObtenerCoorX() << ", " << val.ObtenerCoorY()
              << ", " << val.ObtenerCoorZ() << endl;
-        return; // Salir si el vértice ya está presente
+        return; // Salir si el vertice ya esta presente
     }
 
-    // Determinar la dimensión actual
+    // Determinar la dimension actual
     int dim = nivel % 3;  // Suponiendo que Vertices tiene 3 dimensiones
     float coordVal, coordDato;
 
@@ -106,7 +106,7 @@ void kdnodo<T>::insertar(T& val, int nivel) {
             break; // Comparar en Z
     }
 
-    cout << "Nivel: " << nivel << " Dimensión: " << dim << " CoordVal: " << coordVal << " CoordDato: " << coordDato << endl;
+    cout << "Nivel: " << nivel << " Dimension: " << dim << " CoordVal: " << coordVal << " CoordDato: " << coordDato << endl;
 
     // Decidir si ir al hijo izquierdo o derecho
     if (coordVal < coordDato) {
@@ -123,7 +123,7 @@ void kdnodo<T>::insertar(T& val, int nivel) {
         hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
     } else {
         // Si coordVal == coordDato, significa que el nodo ya existe
-        cout << "El vértice ya existe en esta dimensión: " << coordVal << endl;
+        cout << "El vertice ya existe en esta dimension: " << coordVal << endl;
     }
 }
 
