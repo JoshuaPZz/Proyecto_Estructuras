@@ -284,7 +284,7 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
             vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia); // Método que busca el vértice más cercano
 
             if (menor_distancia < 1e9) { // Verificar si se encontró un vértice
-                cout << "(Resultado exitoso) El vértice más cercano es ("
+                cout << "(Resultado exitoso) El vertice mas cercano es ("
                      << vertice_cercano.ObtenerCoorX() << ", "
                      << vertice_cercano.ObtenerCoorY() << ", "
                      << vertice_cercano.ObtenerCoorZ() << ") "
