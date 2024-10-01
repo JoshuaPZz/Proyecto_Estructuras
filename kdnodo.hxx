@@ -69,28 +69,32 @@ int kdnodo<T>::altura()
 
 template<class T>
 void kdnodo<T>::insertar(T& val, int nivel) {
-    // Si el nodo esta vacio, fijamos el dato
+    // Si el nodo está vacío, fijamos el dato
     if (dato.esVacio()) {
         fijarDato(val); // Guardamos el primer nodo
-        cout << "Insertando primer vertice: " << val.ObtenerCoorX() << ", "
-             << val.ObtenerCoorY() << ", " << val.ObtenerCoorZ() << endl;
+        std::cout << "Insertando primer vértice: "
+                  << val.ObtenerCoorX() << ", "
+                  << val.ObtenerCoorY() << ", "
+                  << val.ObtenerCoorZ() << std::endl;
         return;
     }
 
-    // Comprobacion para evitar duplicados
+    // Comprobación para evitar duplicados exactos en todas las dimensiones
     if (dato.ObtenerCoorX() == val.ObtenerCoorX() &&
         dato.ObtenerCoorY() == val.ObtenerCoorY() &&
         dato.ObtenerCoorZ() == val.ObtenerCoorZ()) {
-        cout << "El vertice ya existe en el arbol: "
-             << val.ObtenerCoorX() << ", " << val.ObtenerCoorY()
-             << ", " << val.ObtenerCoorZ() << endl;
-        return; // Salir si el vertice ya esta presente
+        std::cout << "El vertice ya existe en el árbol: "
+                  << val.ObtenerCoorX() << ", "
+                  << val.ObtenerCoorY() << ", "
+                  << val.ObtenerCoorZ() << std::endl;
+        return; // Salir si el vértice ya está presente
     }
 
-    // Determinar la dimension actual
-    int dim = nivel % 3;  // Suponiendo que Vertices tiene 3 dimensiones
+    // Determinar la dimensión actual (0 = X, 1 = Y, 2 = Z)
+    int dim = nivel % 3;  // Asumimos que Vertices tiene 3 dimensiones
     float coordVal, coordDato;
 
+    // Alternar la coordenada comparada según el nivel (dim)
     switch (dim) {
         case 0:
             coordVal = val.ObtenerCoorX();
@@ -106,24 +110,27 @@ void kdnodo<T>::insertar(T& val, int nivel) {
             break; // Comparar en Z
     }
 
-    cout << "Nivel: " << nivel << " Dimension: " << dim << " CoordVal: " << coordVal << " CoordDato: " << coordDato << endl;
+    std::cout << "Nivel: " << nivel << " Dimension: " << dim
+              << " CoordVal: " << coordVal
+              << " CoordDato: " << coordDato << std::endl;
 
-    // Decidir si ir al hijo izquierdo o derecho
+    // Decidir si ir al hijo izquierdo o derecho según la coordenada
     if (coordVal < coordDato) {
         if (hijoIzq == nullptr) {
-            hijoIzq = new kdnodo<T>(); // Crea nuevo nodo
-            cout << "Creando hijo izquierdo para " << coordVal << endl;
+            hijoIzq = new kdnodo<T>(); // Crea un nuevo nodo para el hijo izquierdo
+            std::cout << "Creando hijo izquierdo para " << coordVal << std::endl;
         }
-        hijoIzq->insertar(val, nivel + 1); // Llamada recursiva al hijo izquierdo
-    } else if (coordVal > coordDato) { // Para el caso >
+        hijoIzq->insertar(val, nivel + 1); // Inserta en el hijo izquierdo
+    } else if (coordVal > coordDato) {
+        // Si el valor es mayor, ir al hijo derecho
         if (hijoDer == nullptr) {
-            hijoDer = new kdnodo<T>(); // Crea nuevo nodo
-            cout << "Creando hijo derecho para " << coordVal << endl;
+            hijoDer = new kdnodo<T>(); // Crea un nuevo nodo para el hijo derecho
+            std::cout << "Creando hijo derecho para " << coordVal << std::endl;
         }
-        hijoDer->insertar(val, nivel + 1); // Llamada recursiva al hijo derecho
+        hijoDer->insertar(val, nivel + 1); // Inserta en el hijo derecho
     } else {
-        // Si coordVal == coordDato, significa que el nodo ya existe
-        cout << "El vertice ya existe en esta dimension: " << coordVal << endl;
+        // Si coordVal == coordDato pero en otra dimensión (caso raro)
+        std::cout << "El vertice ya existe en esta dimension: " << coordVal << std::endl;
     }
 }
 

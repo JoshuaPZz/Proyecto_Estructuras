@@ -259,46 +259,45 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
     float py = stof(coory);
     float pz = stof(coorz);
 
+    kdtree<Vertices> arbol;
+    bool figura_encontrada = false;
 
-
-    list<Figuras>::iterator it = figura.begin(); // Iterador para la lista de figuras
-    while (it != figura.end()) {
+    for (list<Figuras>::iterator it = figura.begin(); it != figura.end(); ++it) {
         if (it->ObtenerNombre() == nombre) {
-            double menor_distancia = 1e9; // Valor alto para inicializar la menor distancia
-            Vertices vertice_cercano;  // Almacenar el vértice más cercano
+            figura_encontrada = true;
+            list<Vertices> vertices = it->ObtenerVertices(); // Ahora obtenemos una copia
 
-            // Obtener los vértices de la figura actual
-            list<Vertices> vertices = it->ObtenerVertices();
-            // Insertar los vértices en el árbol
-          for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
-            cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
-                 << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
-            arbol.insertar(*vertice_it);
+            for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
+                cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
+                     << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
 
-          //NO SALE DE ESTE BUCLE
-
+                arbol.insertar(*vertice_it);
             }
-
-            // Ahora buscar el vértice más cercano usando el árbol
-            Vertices punto_buscado(-1,px, py, pz); // Crear un objeto Vertices en lugar de un vector de floats
-            vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia); // Método que busca el vértice más cercano
-
-            if (menor_distancia < 1e9) { // Verificar si se encontró un vértice
-                cout << "(Resultado exitoso) El vertice mas cercano es ("
-                     << vertice_cercano.ObtenerCoorX() << ", "
-                     << vertice_cercano.ObtenerCoorY() << ", "
-                     << vertice_cercano.ObtenerCoorZ() << ") "
-                     << "del objeto " << nombre << " es el más cercano al punto ("
-                     << px << ", " << py << ", " << pz << "), a una distancia de "
-                     << menor_distancia << "." << endl;
-            } else {
-                cout << "(Objeto no existe) El objeto " << nombre << " no ha sido cargado en memoria." << endl;
-            }
-            return; // Salir del método después de encontrar el objeto
+            break; // Salir del bucle una vez que se encuentra la figura
         }
-        ++it; // Mover al siguiente elemento en la lista de figuras
     }
-    cout << "(Objeto no existe) El objeto " << nombre << " no ha sido cargado en memoria." << endl;
+
+    if (!figura_encontrada) {
+        cout << "(Objeto no existe) El objeto " << nombre << " no ha sido cargado en memoria." << endl;
+        return;
+    }
+
+    double menor_distancia = std::numeric_limits<double>::max();
+    Vertices punto_buscado(-1, px, py, pz);
+    Vertices vertice_cercano;
+    vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia);
+
+    if (menor_distancia < std::numeric_limits<double>::max()) {
+        cout << "(Resultado exitoso) El vertice mas cercano es ("
+             << vertice_cercano.ObtenerCoorX() << ", "
+             << vertice_cercano.ObtenerCoorY() << ", "
+             << vertice_cercano.ObtenerCoorZ() << ") "
+             << "del objeto " << nombre << " es el más cercano al punto ("
+             << px << ", " << py << ", " << pz << "), a una distancia de "
+             << menor_distancia << "." << endl;
+    } else {
+        cout << "(Error inesperado) No se pudo encontrar un vértice cercano en el objeto " << nombre << "." << endl;
+    }
 }
 
 

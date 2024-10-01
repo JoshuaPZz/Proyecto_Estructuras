@@ -30,7 +30,7 @@ public:
 
 private:
     kdnodo<T>* insertarRec(kdnodo<T>* nodo, Vertices& vertice, int profundidad);
-    void encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano);
+    void encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano, int indice);
 };
 
 #include "kdtree.hxx"

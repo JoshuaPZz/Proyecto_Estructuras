@@ -37,12 +37,19 @@ int kdtree<T>::tamano()
 template<class T>
 void kdtree<T>::insertar(Vertices& vertice) {
 	if (!raiz) {
+		// Si no hay raíz, creamos el primer nodo
 		raiz = new kdnodo<T>();
-		raiz->fijarDato(vertice);  // Usamos el objeto Vertices directamente
+		raiz->fijarDato(vertice);  // Guardamos el primer vértice en la raíz
+		std::cout << "Insertando raíz con vértice: "
+				  << vertice.ObtenerCoorX() << ", "
+				  << vertice.ObtenerCoorY() << ", "
+				  << vertice.ObtenerCoorZ() << std::endl;
 	} else {
-		raiz->insertar(vertice, 0); // Llamamos al método insertar
+		// Llamamos al método de inserción recursivo en la raíz
+		raiz->insertar(vertice, 0); // El nivel comienza en 0
 	}
 }
+
 
 
 
@@ -105,18 +112,20 @@ template<class T>
 double kdtree<T>::distanciaEuclidiana(Vertices& puntoFig, const std::vector<float>& puntoComp) {
 	double suma = 0.0;
 
-	// Utiliza los métodos adecuados para obtener las coordenadas
+	// Obtener las coordenadas del vértice
 	float coordX = puntoFig.ObtenerCoorX();
 	float coordY = puntoFig.ObtenerCoorY();
 	float coordZ = puntoFig.ObtenerCoorZ();
 
-	// Supongamos que puntoComp tiene 3 dimensiones
+	// Calcular la suma de las diferencias al cuadrado
 	suma += pow(coordX - puntoComp[0], 2);
 	suma += pow(coordY - puntoComp[1], 2);
 	suma += pow(coordZ - puntoComp[2], 2);
 
+	// Retornar la raíz cuadrada de la suma de cuadrados
 	return sqrt(suma);
 }
+
 
 
 
@@ -124,9 +133,17 @@ template<class T>
 Vertices kdtree<T>::encontrarMasCercano(Vertices& punto_buscado, double& menor_distancia) {
 	Vertices vertice_cercano; // Variable para almacenar el vértice más cercano
 	std::vector<float> punto = { punto_buscado.ObtenerCoorX(), punto_buscado.ObtenerCoorY(), punto_buscado.ObtenerCoorZ() };
-	encontrarMasCercanoRec(raiz, punto, menor_distancia, vertice_cercano);
+
+	// Inicializar menor_distancia con un valor muy grande
+	menor_distancia = std::numeric_limits<double>::max();
+
+	// Llamada recursiva al método para encontrar el vértice más cercano
+	encontrarMasCercanoRec(raiz, punto, menor_distancia, vertice_cercano, 0);
+
 	return vertice_cercano;
 }
+
+
 
 template<class T>
 kdnodo<T>* kdtree<T>::insertarRec(kdnodo<T>* nodo,  Vertices& vertice, int profundidad) {
@@ -151,34 +168,54 @@ kdnodo<T>* kdtree<T>::insertarRec(kdnodo<T>* nodo,  Vertices& vertice, int profu
 }
 
 template<class T>
-void kdtree<T>::encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano) {
-	if (nodo == nullptr) return;
+void kdtree<T>::encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano, int nivel) {
+    if (nodo == nullptr) return;
 
-	// Asegúrate de que obtenerDato() devuelva un objeto Vertices
-	Vertices datoNodo = nodo->obtenerDato(); // Aquí obtenemos el objeto Vertices
+    // Obtener el dato del nodo actual (debería ser un objeto Vertices)
+    Vertices datoNodo = nodo->obtenerDato();
 
-	// Llama a distanciaEuclidiana con un objeto Vertices
-	double distancia = distanciaEuclidiana(datoNodo, punto);
+    // Calcular la distancia Euclidiana entre el punto del nodo y el punto de búsqueda
+    double distancia = distanciaEuclidiana(datoNodo, punto);
 
-	if (distancia < menor_distancia) {
-		menor_distancia = distancia;
-		vertice_cercano = datoNodo; // Usar el objeto Vertices directamente
-	}
+    // Imprimir para depuración
+    std::cout << "Distancia actual: " << distancia << " - Vértice: ("
+              << datoNodo.ObtenerCoorX() << ", "
+              << datoNodo.ObtenerCoorY() << ", "
+              << datoNodo.ObtenerCoorZ() << ")" << std::endl;
 
-	int dim = punto.size();
-	int indice = 0; // Alterna entre los índices de las dimensiones
-	float coordNodo = datoNodo.ObtenerCoorX(); // Usa el método adecuado para obtener la coordenada
+    // Actualizar el vértice más cercano si encontramos uno más cercano
+    if (distancia < menor_distancia) {
+        menor_distancia = distancia;
+        vertice_cercano = datoNodo;
+    }
 
-	if (punto[indice] < coordNodo) {
-		encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano);
-		if (fabs(punto[indice] - coordNodo) < menor_distancia) {
-			encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano);
-		}
-	} else {
-		encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano);
-		if (fabs(punto[indice] - coordNodo) < menor_distancia) {
-			encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano);
-		}
-	}
+    // Determinar la dimensión actual (0 = X, 1 = Y, 2 = Z)
+    int dim = 3; // Número de dimensiones
+    int indice = nivel % dim; // Alternamos entre X, Y, Z
+
+    // Obtener la coordenada del nodo actual según el nivel
+    float coordNodo;
+    if (indice == 0) coordNodo = datoNodo.ObtenerCoorX();
+    else if (indice == 1) coordNodo = datoNodo.ObtenerCoorY();
+    else coordNodo = datoNodo.ObtenerCoorZ();
+
+    // Decidir si buscar en el hijo izquierdo o derecho
+    if (punto[indice] < coordNodo) {
+        // Buscar en el hijo izquierdo
+        encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano, nivel + 1);
+
+        // Verificar si necesitamos revisar también el otro lado
+        if (fabs(punto[indice] - coordNodo) < menor_distancia) {
+            encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano, nivel + 1);
+        }
+    } else {
+        // Buscar en el hijo derecho
+        encontrarMasCercanoRec(nodo->obtenerHijoDer(), punto, menor_distancia, vertice_cercano, nivel + 1);
+
+        // Verificar si necesitamos revisar también el otro lado
+        if (fabs(punto[indice] - coordNodo) < menor_distancia) {
+            encontrarMasCercanoRec(nodo->obtenerHijoIzq(), punto, menor_distancia, vertice_cercano, nivel + 1);
+        }
+    }
 }
 
