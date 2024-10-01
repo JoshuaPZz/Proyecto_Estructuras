@@ -72,7 +72,7 @@ void kdnodo<T>::insertar(T& val, int nivel) {
     // Si el nodo está vacío, fijamos el dato
     if (dato.esVacio()) {
         fijarDato(val); // Guardamos el primer nodo
-        std::cout << "Insertando primer vértice: "
+        std::cout << "Insertando primer vertice: "
                   << val.ObtenerCoorX() << ", "
                   << val.ObtenerCoorY() << ", "
                   << val.ObtenerCoorZ() << std::endl;
@@ -83,7 +83,7 @@ void kdnodo<T>::insertar(T& val, int nivel) {
     if (dato.ObtenerCoorX() == val.ObtenerCoorX() &&
         dato.ObtenerCoorY() == val.ObtenerCoorY() &&
         dato.ObtenerCoorZ() == val.ObtenerCoorZ()) {
-        std::cout << "El vertice ya existe en el árbol: "
+        std::cout << "El vertice ya existe en el arbol: "
                   << val.ObtenerCoorX() << ", "
                   << val.ObtenerCoorY() << ", "
                   << val.ObtenerCoorZ() << std::endl;
