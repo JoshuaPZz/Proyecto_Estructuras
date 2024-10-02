@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <iostream>
-#include "Vertices.h" 
+#include "Vertices.h"
 
 using namespace std;
 
