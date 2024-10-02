@@ -261,56 +261,68 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
 
     kdtree<Vertices> arbol;
     bool figura_encontrada = false;
+    Vertices punto_buscado(-1, px, py, pz);
 
-    for (list<Figuras>::iterator it = figura.begin(); it != figura.end(); ++it) {
-        if (it->ObtenerNombre() == nombre) {
-            figura_encontrada = true;
-            list<Vertices> vertices = it->ObtenerVertices(); // Ahora obtenemos una copia
+    if (!nombre.empty()) {
+        for (list<Figuras>::iterator it = figura.begin(); it != figura.end(); ++it) {
+            if (it->ObtenerNombre() == nombre) {
+                figura_encontrada = true;
+                list<Vertices> vertices = it->ObtenerVertices(); // Ahora obtenemos una copia
 
+                for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
+                    cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
+                         << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
+
+                    arbol.insertar(*vertice_it);
+                }
+                break;
+            }
+        }
+
+        if (!figura_encontrada) {
+            cout << "(Objeto no existe) El objeto " << nombre << " no ha sido cargado en memoria." << endl;
+            return;
+        }
+
+        double menor_distancia = numeric_limits<double>::max();
+        Vertices vertice_cercano;
+        vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia);
+
+        if (menor_distancia < numeric_limits<double>::max()) {
+            cout << "(Resultado exitoso) El vertice mas cercano es ("
+                 << vertice_cercano.ObtenerCoorX() << ", "
+                 << vertice_cercano.ObtenerCoorY() << ", "
+                 << vertice_cercano.ObtenerCoorZ() << ") "
+                 << "del objeto " << nombre << " es el mas cercano al punto ("
+                 << px << ", " << py << ", " << pz << "), a una distancia de "
+                 << menor_distancia << "." << endl;
+        } else {
+            cout << "(Error inesperado) No se pudo encontrar un vertice cercano en el objeto " << nombre << "." << endl;
+        }
+    } else {
+        cout << "boff";
+        double menor_distancia_global = numeric_limits<double>::max();
+        Vertices vertice_cercano_global;
+        for (list<Figuras>::iterator it = figura.begin(); it != figura.end(); ++it) {
+            list<Vertices> vertices = it->ObtenerVertices();
             for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
-                cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
+                cout << "Insertando vertice para busqueda global: " << vertice_it->ObtenerCoorX() << ", "
                      << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
 
                 arbol.insertar(*vertice_it);
             }
-            break; // Salir del bucle una vez que se encuentra la figura
+        }
+        vertice_cercano_global = arbol.encontrarMasCercano(punto_buscado, menor_distancia_global);
+
+        if (menor_distancia_global < numeric_limits<double>::max()) {
+            cout << "(Resultado exitoso) El vertice mas cercano en todos los objetos es ("
+                 << vertice_cercano_global.ObtenerCoorX() << ", "
+                 << vertice_cercano_global.ObtenerCoorY() << ", " << vertice_cercano_global.ObtenerCoorZ() << ") "
+                 << ", a una distancia de " << menor_distancia_global << "." << endl;
+        } else {
+            cout << "(Error inesperado) No se pudo encontrar un vertice cercano en ninguna figura." << endl;
         }
     }
-
-    if (!figura_encontrada) {
-        cout << "(Objeto no existe) El objeto " << nombre << " no ha sido cargado en memoria." << endl;
-        return;
-    }
-
-    double menor_distancia = std::numeric_limits<double>::max();
-    Vertices punto_buscado(-1, px, py, pz);
-    Vertices vertice_cercano;
-    vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia);
-
-    if (menor_distancia < std::numeric_limits<double>::max()) {
-        cout << "(Resultado exitoso) El vertice mas cercano es ("
-             << vertice_cercano.ObtenerCoorX() << ", "
-             << vertice_cercano.ObtenerCoorY() << ", "
-             << vertice_cercano.ObtenerCoorZ() << ") "
-             << "del objeto " << nombre << " es el más cercano al punto ("
-             << px << ", " << py << ", " << pz << "), a una distancia de "
-             << menor_distancia << "." << endl;
-    } else {
-        cout << "(Error inesperado) No se pudo encontrar un vértice cercano en el objeto " << nombre << "." << endl;
-    }
-}
-
-
-
-void Figuras::insertarVerticeArbol(Vertices& vertice) {
-    // Asegúrate de que el árbol está inicializado
-    if (arbol.esVacio()) {
-        cout << "Error: El árbol no está inicializado." << endl;
-        return;
-    }
-
-    // Insertar en el árbol k-d
-    arbol.insertar(vertice);
 }
 
 

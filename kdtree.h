@@ -5,32 +5,31 @@
 #include <cmath>
 #include "kdnodo.h"
 
-template<class T>
+template <typename T>
 class kdtree {
 protected:
     kdnodo<T>* raiz;
-
 public:
     kdtree();
     bool esVacio();
     T& datoRaiz();
     int altura();
     int tamano();
-    void insertar(Vertices& vertice);
-    bool eliminar(std::vector<T>& val);
-    kdnodo<T>* buscar(std::vector<T>& val);
+    void insertar(T& vertice);
+    bool eliminar(const T& val);
+    kdnodo<T>* buscar(const T& val);
     void preOrden();
     void inOrden();
     void posOrden();
     void nivelOrden();
-    void maximo(int &maxi);
-    void minimo(int &mini);
-    double distanciaEuclidiana(Vertices& puntoFig, const std::vector<float>& puntoComp);
-    Vertices encontrarMasCercano( Vertices& punto_buscado, double& menor_distancia);
+    void maximo(T& maxi);
+    void minimo(T& mini);
+    double distanciaEuclidiana(T& puntoFig, const std::vector<float>& puntoComp);
+    T encontrarMasCercano(T& punto_buscado, double& menor_distancia);
 
 private:
-    kdnodo<T>* insertarRec(kdnodo<T>* nodo, Vertices& vertice, int profundidad);
-    void encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, Vertices& vertice_cercano, int indice);
+    kdnodo<T>* insertarRec(kdnodo<T>* nodo, T& vertice, int profundidad);
+    void encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>& punto, double& menor_distancia, T& vertice_cercano, int indice); // Cambiado de Vertices a T
 };
 
 #include "kdtree.hxx"

@@ -3,22 +3,22 @@
 
 #include <vector>
 #include <iostream>
-#include "Vertices.h" // Asegúrate de incluir el archivo Vertices.h
+#include "Vertices.h" 
 
 using namespace std;
 
 template<class T>
 class kdnodo {
 private:
-    T dato;  // Almacena un objeto de tipo Vertices
+    Vertices dato;
     kdnodo<T>* hijoIzq;  // Puntero al hijo izquierdo
     kdnodo<T>* hijoDer;  // Puntero al hijo derecho
     int tag; // Nivel de división (0 para X, 1 para Y, 2 para Z)
 
 public:
     kdnodo();
-    T& obtenerDato();
-    void fijarDato(const T& val);
+    Vertices& obtenerDato();
+    void fijarDato(const Vertices& val);
     kdnodo<T>* obtenerHijoIzq();
     kdnodo<T>* obtenerHijoDer();
     void fijarHijoIzq(kdnodo<T>* izq);
@@ -26,7 +26,7 @@ public:
     void fijarTag(int value);
     int altura();
     int tamano();
-    void insertar(T& val, int nivel);
+    void insertar(Vertices& val, int nivel);
     kdnodo<T>* buscar(const std::vector<T>& val, int nivel);
     vector<float> obtenerCoordenadas();
     void preOrden();

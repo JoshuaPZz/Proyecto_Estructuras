@@ -1,7 +1,7 @@
 #include "kdnodo.h"
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <iostream>
+#include <queue>
+#include <cmath>
 
 template<class T>
 kdnodo<T>::kdnodo()
@@ -12,13 +12,13 @@ kdnodo<T>::kdnodo()
 }
 
 template<class T>
-T& kdnodo<T>::obtenerDato()
+Vertices& kdnodo<T>::obtenerDato()
 {
     return dato;
 }
 
 template<class T>
-void kdnodo<T>::fijarDato(const T& val) {
+void kdnodo<T>::fijarDato(const Vertices& val) {
     dato = val;  // Asigna el valor recibido al dato
 }
 
@@ -64,11 +64,11 @@ int kdnodo<T>::altura()
     else if (this->hijoDer == nullptr)
         return this->hijoIzq->altura() + 1;
 
-    return max(this->hijoIzq->altura(), this->hijoDer->altura()) + 1;
+    return std::max(this->hijoIzq->altura(), this->hijoDer->altura()) + 1;
 }
 
 template<class T>
-void kdnodo<T>::insertar(T& val, int nivel) {
+void kdnodo<T>::insertar(Vertices& val, int nivel) {
     // Si el nodo está vacío, fijamos el dato
     if (dato.esVacio()) {
         fijarDato(val); // Guardamos el primer nodo
@@ -79,7 +79,7 @@ void kdnodo<T>::insertar(T& val, int nivel) {
         return;
     }
 
-    // Comprobación para evitar duplicados exactos en todas las dimensiones
+    // evitar duplicados exactos
     if (dato.ObtenerCoorX() == val.ObtenerCoorX() &&
         dato.ObtenerCoorY() == val.ObtenerCoorY() &&
         dato.ObtenerCoorZ() == val.ObtenerCoorZ()) {
@@ -87,34 +87,37 @@ void kdnodo<T>::insertar(T& val, int nivel) {
                   << val.ObtenerCoorX() << ", "
                   << val.ObtenerCoorY() << ", "
                   << val.ObtenerCoorZ() << std::endl;
-        return; // Salir si el vértice ya está presente
+        return; // si el vertice ya esta paila
     }
 
     // Determinar la dimensión actual (0 = X, 1 = Y, 2 = Z)
-    int dim = nivel % 3;  // Asumimos que Vertices tiene 3 dimensiones
+    int dim = nivel % 3;
     float coordVal, coordDato;
 
-    // Alternar la coordenada comparada según el nivel (dim)
+    // segun el dim alternar entre dimensiones
     switch (dim) {
         case 0:
+            //x
             coordVal = val.ObtenerCoorX();
             coordDato = dato.ObtenerCoorX();
-            break; // Comparar en X
+            break;
         case 1:
+            //y
             coordVal = val.ObtenerCoorY();
             coordDato = dato.ObtenerCoorY();
-            break; // Comparar en Y
+            break;
         case 2:
+            //z
             coordVal = val.ObtenerCoorZ();
             coordDato = dato.ObtenerCoorZ();
-            break; // Comparar en Z
+            break;
     }
 
     std::cout << "Nivel: " << nivel << " Dimension: " << dim
               << " CoordVal: " << coordVal
               << " CoordDato: " << coordDato << std::endl;
 
-    // Decidir si ir al hijo izquierdo o derecho según la coordenada
+    // Comparar según la dimensión actual
     if (coordVal < coordDato) {
         if (hijoIzq == nullptr) {
             hijoIzq = new kdnodo<T>(); // Crea un nuevo nodo para el hijo izquierdo
@@ -122,40 +125,27 @@ void kdnodo<T>::insertar(T& val, int nivel) {
         }
         hijoIzq->insertar(val, nivel + 1); // Inserta en el hijo izquierdo
     } else if (coordVal > coordDato) {
-        // Si el valor es mayor, ir al hijo derecho
         if (hijoDer == nullptr) {
             hijoDer = new kdnodo<T>(); // Crea un nuevo nodo para el hijo derecho
             std::cout << "Creando hijo derecho para " << coordVal << std::endl;
         }
         hijoDer->insertar(val, nivel + 1); // Inserta en el hijo derecho
     } else {
-        // Si coordVal == coordDato pero en otra dimensión (caso raro)
-        std::cout << "El vertice ya existe en esta dimension: " << coordVal << std::endl;
+        // Si coordVal y coordDato son iguales en la dimensión actual,no insertamos na
+        std::cout << "Las coordenadas son iguales en la dimension " << dim
+                  << ". El vertice ya existe o es un duplicado parcial." << std::endl;
+        return;
     }
 }
-
 
 
 // Método para obtener coordenadas de un nodo
 template<class T>
 std::vector<float> kdnodo<T>::obtenerCoordenadas()
 {
-    return {dato[0].getX(), dato[0].getY(), dato[0].getZ()};
+    return {dato.ObtenerCoorX(), dato.ObtenerCoorY(), dato.ObtenerCoorZ()};
 }
 
-template<class T>
-kdnodo<T>* kdnodo<T>::buscar(const std::vector<T>& val, int nivel) {
-    if (dato == val) {
-        return this;  // Se encontró el nodo
-    }
-
-    int dim = nivel % val.size();  // Obtener la dimensión actual
-    if (val[dim] < dato[dim]) {
-        return hijoIzq ? hijoIzq->buscar(val, nivel + 1) : nullptr;  // Buscar en el hijo izquierdo
-    } else {
-        return hijoDer ? hijoDer->buscar(val, nivel + 1) : nullptr;  // Buscar en el hijo derecho
-    }
-}
 template<class T>
 void kdnodo<T>::preOrden()
 {
@@ -193,11 +183,11 @@ void kdnodo<T>::posOrden()
 template<class T>
 void kdnodo<T>::nivelOrden()
 {
-    queue<kdnodo*> cola;
+    std::queue<kdnodo<T>*> cola;
     cola.push(this);
     while (!cola.empty())
     {
-        cout << "\t" << cola.front()->obtenerDato() << endl;
+        cola.front()->imprimir();
         if (cola.front()->hijoIzq != nullptr)
         {
             cola.push(cola.front()->hijoIzq);
@@ -213,44 +203,39 @@ void kdnodo<T>::nivelOrden()
 
 template<class T>
 void kdnodo<T>::maximo(float& maxi) {
-    // Comparar el dato actual con el máximo actual
-    if (maxi < this->obtenerDato()) {
-        maxi = this->obtenerDato();  // Actualiza el máximo si es necesario
+    if (maxi < dato.ObtenerCoorX()) {
+        maxi = dato.ObtenerCoorX();  // Actualiza el máximo
     }
 
-    // Llama recursivamente a los hijos izquierdo y derecho
-    if (this->hijoIzq != nullptr) {
-        this->hijoIzq->maximo(maxi);  // Busca en el hijo izquierdo
+    if (hijoIzq != nullptr) {
+        hijoIzq->maximo(maxi);  // Busca en el hijo izquierdo
     }
 
-    if (this->hijoDer != nullptr) {
-        this->hijoDer->maximo(maxi);  // Busca en el hijo derecho
+    if (hijoDer != nullptr) {
+        hijoDer->maximo(maxi);  // Busca en el hijo derecho
     }
 }
 
 template<class T>
 void kdnodo<T>::minimo(float& mini) {
-    if (mini > this->obtenerDato()) {
-        mini = this->obtenerDato();  // Actualiza el mínimo si es necesario
-    }
-    if (this->hijoIzq != nullptr) {
-        this->hijoIzq->minimo(mini);  // Busca en el hijo izquierdo
+    if (mini > dato.ObtenerCoorX()) {
+        mini = dato.ObtenerCoorX();  // Actualiza el mínimo
     }
 
-    if (this->hijoDer != nullptr) {
-        this->hijoDer->minimo(mini);  // Busca en el hijo derecho
+    if (hijoIzq != nullptr) {
+        hijoIzq->minimo(mini);  // Busca en el hijo izquierdo
+    }
+
+    if (hijoDer != nullptr) {
+        hijoDer->minimo(mini);  // Busca en el hijo derecho
     }
 }
 
 template<class T>
 void kdnodo<T>::imprimir()
 {
-    cout << "( ";
-    for (size_t i = 0; i < this->dato.size(); ++i)
-    {
-        cout << this->dato[i];
-        if (i != this->dato.size() - 1)
-            cout << ", ";
-    }
-    cout << " )\n";
+    std::cout << "( "
+              << dato.ObtenerCoorX() << ", "
+              << dato.ObtenerCoorY() << ", "
+              << dato.ObtenerCoorZ() << " )" << std::endl;
 }
