@@ -36,11 +36,7 @@ public:
     void maximo(float& maxi);
     void minimo(float& mini);
     void imprimir();
-    double distanciaEuclidiana( Vertices& p1,  Vertices& p2) {
-        return sqrt(pow(p1.ObtenerCoorX() - p2.ObtenerCoorX(), 2) +
-                    pow(p1.ObtenerCoorY() - p2.ObtenerCoorY(), 2) +
-                    pow(p1.ObtenerCoorZ() - p2.ObtenerCoorZ(), 2));
-    }
+    double distanciaEuclidiana( Vertices& p1,  Vertices& p2);
 };
 #include "kdnodo.hxx"
 #endif

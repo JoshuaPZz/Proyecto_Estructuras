@@ -239,3 +239,10 @@ void kdnodo<T>::imprimir()
               << dato.ObtenerCoorY() << ", "
               << dato.ObtenerCoorZ() << " )" << std::endl;
 }
+
+template <class T>
+double kdnodo<T>::distanciaEuclidiana( Vertices& p1,  Vertices& p2) {
+    return sqrt(pow(p1.ObtenerCoorX() - p2.ObtenerCoorX(), 2) +
+                pow(p1.ObtenerCoorY() - p2.ObtenerCoorY(), 2) +
+                pow(p1.ObtenerCoorZ() - p2.ObtenerCoorZ(), 2));
+}
