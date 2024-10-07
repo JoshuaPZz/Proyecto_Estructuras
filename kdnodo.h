@@ -25,9 +25,7 @@ public:
     void fijarHijoDer(kdnodo<T>* der);
     void fijarTag(int value);
     int altura();
-    int tamano();
     void insertar(Vertices& val, int nivel);
-    kdnodo<T>* buscar(const std::vector<T>& val, int nivel);
     vector<float> obtenerCoordenadas();
     void preOrden();
     void inOrden();
