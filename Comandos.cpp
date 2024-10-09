@@ -57,6 +57,10 @@ bool Comandos::validarArgumentos(const string &comando, int numArgumentos,
     return true;
   }
   if (comando == "v_cercanos_caja" && numArgumentos == 1) {
+
+// fi.el metodo de caja
+
+
     return true;
   }
   if (comando == "ruta_corta" && numArgumentos == 3) {
