@@ -62,10 +62,8 @@ void Sistema::mostrarAyuda(const string& argumento1) {
              << "Escribe `ayuda comando' para obtener más información sobre la función `comando'" << endl << endl;
         cout << setw(80) << "TIENE ESTAS OPCIONES DE COMANDO: " << endl << endl;
         for (int i = 0; i < comandos.size(); i++) {
-            cout << "+-----------------------+" << endl;
             cout << "| " << setw(20) << left << comandos[i].ObtenerNombrede() << endl;
             cout << "+-----------------------+" << endl;
-            cout << "| " << comandos[i].ObtenerDescripcion() << endl << endl;
         }
     } else {
         int ncom = 0;
