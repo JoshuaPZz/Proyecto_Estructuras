@@ -58,7 +58,7 @@ bool Comandos::validarArgumentos(const string &comando, int numArgumentos,
   }
   if (comando == "v_cercanos_caja" && numArgumentos == 1) {
 
-// fi.el metodo de caja
+fi.Vcercano_Caja(figura,argumento1);
 
 
     return true;

@@ -324,7 +324,83 @@ void Figuras::Vcercano(list<Figuras> figura, const string &coorx, const string &
         }
     }
 }
+void Figuras::Vcercano_Caja(list<Figuras> & figura,const string &nombre)
+{
+  if (figura.empty()) {
+    cout << "Ningun objeto ha sido cargado en memoria." << endl;
+    exit(-1);
+  }
 
+  list<Figuras> figuras_encontradas;
+  Figuras caja;
+
+  for (list<Figuras>::iterator it = figura.begin(); it != figura.end(); ++it)
+  {
+    if (it->ObtenerNombre() == nombre) {
+      figuras_encontradas.push_back(*it);
+
+      // Crear la caja envolvente
+      it->Envolvente(figura, nombre);
+
+      // Buscar la caja envolvente creada
+      for (list<Figuras>::iterator itCaja = figura.begin(); itCaja != figura.end(); ++itCaja) {
+        if (itCaja->ObtenerNombre() == "env_" + nombre) {
+          caja = *itCaja; // Asignar la caja envolvente encontrada
+          break;
+        }
+      }
+
+      list<Vertices> vertices = it->ObtenerVertices(); // Obtener una copia
+
+      for (list<Vertices>::iterator vertice_it = vertices.begin(); vertice_it != vertices.end(); ++vertice_it) {
+        cout << "Insertando vertice: " << vertice_it->ObtenerCoorX() << ", "
+             << vertice_it->ObtenerCoorY() << ", " << vertice_it->ObtenerCoorZ() << endl;
+
+        arbol.insertar(*vertice_it); // Insertar en el árbol
+      }
+
+      break; // Salir del bucle después de procesar la figura
+    }
+  }
+  if (figuras_encontradas.empty()) {
+    cout << "No se encontro la figura con nombre: " << nombre << endl;
+    exit(-1);
+  }
+
+    double menor_distancia = numeric_limits<double>::max();
+    Vertices vertice_cercano;
+  cout << setw(10) << "ESQUINA"
+     << setw(22) << "VERTICE"
+     << setw(20) << "                     DISTANCIA" << endl;
+
+  list<Vertices> verticesCajaList = caja.ObtenerVertices();
+  // Convertir la lista a un vector
+  vector<Vertices> verticesCaja(verticesCajaList.begin(), verticesCajaList.end());
+  int cont = 1;
+
+  for (int i = 0; i < verticesCaja.size(); ++i) {
+    Vertices& v = verticesCaja[i];
+    float x = v.ObtenerCoorX();
+    float y = v.ObtenerCoorY();
+    float z = v.ObtenerCoorZ();
+
+    Vertices punto_buscado(-1, x, y, z);
+    Vertices vertice_cercano = arbol.encontrarMasCercano(punto_buscado, menor_distancia);
+
+    cout << setw(3) << cont << " ("
+          << x << ", "
+          <<  y << ", "
+          << z << ") "
+          << setw(12) << "i" << cont << " ("
+          <<  vertice_cercano.ObtenerCoorX() << ", "
+          << vertice_cercano.ObtenerCoorY() << ", "
+          <<  vertice_cercano.ObtenerCoorZ() << ") "
+          << setw(15) << menor_distancia << endl;
+
+    cont++;
+  }
+
+}
 
 
 

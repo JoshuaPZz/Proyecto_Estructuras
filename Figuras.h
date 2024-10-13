@@ -30,6 +30,7 @@ public:
   void Envolvente (list<Figuras> &,const string &);
   void Vcercano(list<Figuras>,const string &,const string &,const string &,const string &);
   void insertarVerticeArbol(Vertices& v);
+  void Vcercano_Caja(list<Figuras> & figura,const string & nombre);
 
 
   string ObtenerNombre() const;

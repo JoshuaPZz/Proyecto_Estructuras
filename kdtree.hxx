@@ -195,3 +195,49 @@ void kdtree<T>::encontrarMasCercanoRec(kdnodo<T>* nodo, const std::vector<float>
         }
     }
 }
+
+/*
+template <typename T>
+std::vector<T> kdtree<T>::encontrarVerticesMasCercanos( Figuras caja) {
+    std::vector<T> verticesCercanos;
+    std::vector<Vertices> esquinas = caja.obtenerEsquinas();
+
+    // Verificar si hay esquinas en la caja envolvente
+    if (esquinas.empty()) {
+        std::cout << "La caja envolvente no contiene esquinas." << std::endl;
+        return verticesCercanos;
+    }
+
+    // Imprimir encabezado de la tabla
+    std::cout << "Resultado exitoso: Los vértices del objeto más cercanos a las esquinas de su caja envolvente son:" << std::endl;
+    std::cout << "Esquina          Vértice          Distancia" << std::endl;
+
+    for (size_t i = 0; i < esquinas.size(); ++i) {
+        const auto& esquina = esquinas[i];
+        double menor_distancia = std::numeric_limits<double>::max();
+        T verticeCercano = encontrarMasCercano(esquina, menor_distancia); // Encontrar el vértice más cercano
+
+        // Si se encontró un vértice cercano
+        if (menor_distancia < std::numeric_limits<double>::max()) {
+            verticesCercanos.push_back(verticeCercano);
+            std::cout << "(" << esquina.ObtenerCoorX() << ", "
+                      << esquina.ObtenerCoorY() << ", "
+                      << esquina.ObtenerCoorZ() << ") "
+                      << " i" << (i + 1) << " ("
+                      << verticeCercano.ObtenerCoorX() << ", "
+                      << verticeCercano.ObtenerCoorY() << ", "
+                      << verticeCercano.ObtenerCoorZ() << ") "
+                      << menor_distancia << std::endl;
+        } else {
+            // Si no se encontró un vértice cercano
+            std::cout << "Esquina " << (i + 1) << " ("
+                      << esquina.ObtenerCoorX() << ", "
+                      << esquina.ObtenerCoorY() << ", "
+                      << esquina.ObtenerCoorZ() << ") "
+                      << " no tiene un vértice cercano." << std::endl;
+        }
+    }
+
+    return verticesCercanos;
+}
+*/
